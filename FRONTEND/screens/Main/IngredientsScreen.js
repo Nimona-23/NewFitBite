@@ -15,7 +15,7 @@ const IngredientsScreen = ({ navigation }) => {
     { id: '2', name: 'Sandwich', calories: 300 },
     { id: '3', name: 'Tomato', calories: 50 },
     { id: '4', name: 'Cucumber', calories: 50 },
-    { id: '5', name: 'Tea without sugar', calories: 0 },
+    { id: '5', name: 'Tea without sugar', calories: 25 },
     { id: '6', name: 'Boiled egg', calories: 96 },
     { id: '7', name: 'Avocado', calories: 250 },
     { id: '8', name: 'Cheese', calories: 300 },
