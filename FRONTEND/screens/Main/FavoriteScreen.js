@@ -60,7 +60,7 @@ const FavoriteRecipesScreen = ({ navigation }) => {
         duration: '5 min.',
         image: require('../../assets/images/cake.png'),
       },
-      
+
     ],
   };
 
@@ -76,7 +76,6 @@ const FavoriteRecipesScreen = ({ navigation }) => {
       {/* Header */}
       <View style={styles.headerContainer}>
         <Header
-          date="2 May, Monday"
           onMorePress={() => console.log('More button pressed')}
           navigation={navigation}
         />

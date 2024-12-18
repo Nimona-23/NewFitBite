@@ -1,17 +1,8 @@
 const mongoose = require('mongoose');
 
-const validCategories = [
-    'Breakfast',
-    'Lunch',
-    'Dinner',
-    'Snack',
-    'First trimester',
-    'Second trimester',
-    'Third trimester'
-];
-
 const generalCategories = ['Breakfast', 'Lunch', 'Dinner', 'Snack'];
-const trimesterCategories = ['First trimester', 'Second trimester', 'Third trimester'];
+const trimesterCategories = [1, 2, 3];
+
 
 const recettesSchema = new mongoose.Schema({
     categorie: {
@@ -20,24 +11,26 @@ const recettesSchema = new mongoose.Schema({
         validate: [
             {
                 validator: function (categories) {
+                    return categories.every(cat =>
+                        generalCategories.map(c => c.toLowerCase()).includes(cat.trim().toLowerCase())
+                    );
+                },
+                message: props =>
+                    `${props.value} contains an invalid category. Allowed categories are: ${generalCategories.join(', ')}.`,
+            },
+        ],
+
+    },
+    trimester: {
+        type: [Number], // Array of strings
+        required: true,
+        validate: [
+            {
+                validator: function (categories) {
                     // Ensure all categories are valid
-                    return categories.every(cat => validCategories.includes(cat));
+                    return categories.every(cat => trimesterCategories.includes(cat));
                 },
-                message: props => `${props.value} contains an invalid category. Allowed categories are: ${validCategories.join(', ')}.`
-            },
-            {
-                validator: function (categories) {
-                    // Ensure at least one trimester category is included
-                    return categories.some(cat => trimesterCategories.includes(cat));
-                },
-                message: 'At least one category must be "First trimester", "Second trimester", or "Third trimester".'
-            },
-            {
-                validator: function (categories) {
-                    // Ensure at least one general category is included
-                    return categories.some(cat => generalCategories.includes(cat));
-                },
-                message: 'At least one category must be "Breakfast", "Lunch", "Dinner", or "Snack".'
+                message: props => `${props.value} contains an invalid category. Allowed categories are: ${trimesterCategories.join(', ')}.`
             }
         ]
     },

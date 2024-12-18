@@ -1,47 +1,110 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { COLORS } from '../../styles/colors'; // Assurez-vous que vos couleurs sont bien définies ici
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { COLORS } from '../../styles/colors';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from './Header';
 import Button from '../../components/Button';
 import { LinearGradient } from 'expo-linear-gradient';
+import { getIngredients } from '../../services/apiService';
+import { getRecipes } from '../../services/apiService';
 
-const IngredientsScreen = ({ navigation }) => {
+const IngredientsScreen = ({ navigation, route }) => {
+  const { category } = route.params; // Catégorie transmise depuis HomeScreen
   const [searchText, setSearchText] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
+  const [foods, setFoods] = useState([]); // Liste dynamique
+  const [trimestre, setTrimestre] = useState(''); // Info utilisateur connecté
+  const [totalCalories, setTotalCalories] = useState(0);
 
-  const foods = [
-    { id: '1', name: 'Coffee with milk', calories: 219 },
-    { id: '2', name: 'Sandwich', calories: 300 },
-    { id: '3', name: 'Tomato', calories: 50 },
-    { id: '4', name: 'Cucumber', calories: 50 },
-    { id: '5', name: 'Tea without sugar', calories: 0 },
-    { id: '6', name: 'Boiled egg', calories: 96 },
-    { id: '7', name: 'Avocado', calories: 250 },
-    { id: '8', name: 'Cheese', calories: 300 },
-  ];
+  useEffect(() => {
+    // Récupérer trimestre de l'utilisateur connecté
+    const userTrimestre = 'first'; // Exemple statique, à remplacer par l'info utilisateur
+    setTrimestre(userTrimestre);
 
-  const toggleItem = (id) => {
-    if (selectedItems.includes(id)) {
-      setSelectedItems(selectedItems.filter((item) => item !== id));
-    } else {
-      setSelectedItems([...selectedItems, id]);
+    // Récupérer les ingrédients et recettes filtrées
+    const fetchData = async () => {
+      try {
+        // Appel pour les ingrédients
+        // const ingredientsResponse = await fetch('http://localhost:8080/api/getIngredients');
+        const ingredientsData = await getIngredients();
+        // const ingredientsData = await ingredientsResponse.json();
+
+        // Appel pour les recettes avec filtre dynamique
+        const recettesData = await getRecipes();
+
+        // Fusionner les ingrédients et les recettes
+        const combinedData = [...ingredientsData, ...recettesData];
+        setFoods(combinedData);
+      } catch (error) {
+        console.error('Erreur lors du chargement des données :', error);
+      }
+    };
+    console.log('Updated selectedItems:', selectedItems);
+
+    fetchData();
+  }, [category, selectedItems]); // Dépendance ajoutée pour recharger les données si la catégorie change
+
+  const saveMeal = async (item, isAdding) => {
+    const mealType = { category }; // Replace with the actual meal type
+    const endpoint = `http://localhost:8080/api/meals`;
+
+    const payload = {
+      mealType,
+      date: new Date().toISOString().split("T")[0], // Today's date
+      item: {
+        itemId: item._id,
+        name: item.name,
+        calories: item.calories,
+      },
+    };
+
+    try {
+      const response = await fetch(endpoint, {
+        method: isAdding ? "POST" : "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+      console.log(result.message);
+    } catch (error) {
+      console.error("Error saving meal:", error);
     }
   };
 
+
+  const toggleItem = (item) => {
+    console.log("Toggling item with id:", item._id);
+
+    if (selectedItems.includes(item._id)) {
+      // If item is already selected, remove it
+      setSelectedItems(selectedItems.filter((id) => id !== item._id));
+      setTotalCalories(totalCalories - item.calories);
+      saveMeal(item, false); // Remove from the table
+    } else {
+      // If item is not selected, add it
+      setSelectedItems([...selectedItems, item._id]);
+      setTotalCalories(totalCalories + item.calories);
+      saveMeal(item, true); // Add to the table
+    }
+  };
+
+
+
+
   const renderFoodItem = (item) => (
-    <View style={styles.foodCard} key={item.id}>
-      <Text style={styles.foodName}>{item.name}</Text>
+    <View style={styles.foodCard} key={item._id}>
+      <Text style={styles.foodName}>{item.nom}</Text>
       <Text style={styles.foodCalories}>{item.calories} kcal</Text>
       <TouchableOpacity
         style={[
           styles.addButton,
-          selectedItems.includes(item.id) && { backgroundColor: COLORS.primary.dark },
+          selectedItems.includes(item._id) && { backgroundColor: COLORS.primary.dark },
         ]}
-        onPress={() => toggleItem(item.id)}
+        onPress={() => toggleItem(item._id)}
       >
         <Feather
-          name={selectedItems.includes(item.id) ? 'check' : 'plus'}
+          name={selectedItems.includes(item._id) ? 'check' : 'plus'}
           size={20}
           color={COLORS.primary.light}
         />
@@ -73,7 +136,6 @@ const IngredientsScreen = ({ navigation }) => {
       {/* Header */}
       <View style={styles.headerContainer}>
         <Header
-          date="2 May, Monday"
           onMorePress={() => console.log('More button pressed')}
           navigation={navigation}
         />
@@ -86,11 +148,11 @@ const IngredientsScreen = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      
+
 
       {/* Title */}
-      <Text style={styles.title}>Breakfast</Text>
-      <Text style={styles.totalCalories}>0 Kcal</Text>
+      <Text style={styles.title}>{category}</Text>
+      <Text style={styles.totalCalories}>Total Calories: {totalCalories}</Text>
 
       {/* Search Bar */}
       <View style={styles.searchBar}>
@@ -105,10 +167,15 @@ const IngredientsScreen = ({ navigation }) => {
 
       <View style={styles.hhh}></View>
 
-      {/* Food List - using ScrollView instead of FlatList */}
+      {/* Food List */}
       <ScrollView style={styles.foodList}>
-        {foods.map((item) => renderFoodItem(item))}
+        {foods.length === 0 ? (
+          <Text style={{ textAlign: 'center', marginTop: 20 }}>No items found</Text>
+        ) : (
+          foods.map((item) => renderFoodItem(item))
+        )}
       </ScrollView>
+
 
       {/* Add to Breakfast Button */}
       <View style={styles.buttonContainer}>
@@ -136,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   bbb: {
-  
+
     paddingTop: 5,
     paddingLeft: 10,
   },
@@ -145,7 +212,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: COLORS.primary.dark,
     marginBottom: 10,
-    paddingTop:-20,
+    paddingTop: -20,
     textAlign: 'center',
     width: '80%',  // Réduit la largeur du titre
     alignSelf: 'center',  // Centre le titre
@@ -168,13 +235,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: '95%',  // Réduit la largeur de la barre de recherche
     alignSelf: 'center',  // Centre la barre de recherche
-    
+
   },
   searchInput: {
     marginLeft: 10,
     flex: 1,
     color: '#555',
-    fontSize:15,
+    fontSize: 15,
   },
   foodList: {
     flex: 1,

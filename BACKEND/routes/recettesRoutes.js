@@ -5,6 +5,7 @@ const {
   getRecettes,
   getRecetteParId,
   supprimerRecette,
+  getFilteredRecettes,
   mettreAJourRecette
 } = require('../controllers/recettesController');
 const router = express.Router();
@@ -212,5 +213,6 @@ router.delete('/:id', supprimerRecette);
  */
 router.put('/:id', mettreAJourRecette);
 
+router.get("/recettes/filtre", getFilteredRecettes);
 
 module.exports = router;

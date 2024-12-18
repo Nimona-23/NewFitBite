@@ -119,7 +119,7 @@ const Navigation = () => {
       />
 
       <Stack.Screen
-        name="Ingredients"
+        name="IngredientsScreen"
         component={IngredientsScreen}
         options={{ headerShown: false }}
       />

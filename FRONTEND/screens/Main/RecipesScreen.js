@@ -466,7 +466,7 @@ const RecipesScreen = ({ navigation }) => {
     >
       {/* Header */}
       <View style={styles.headerContainer}>
-        <Header date="2 May, Monday" navigation={navigation} />
+        <Header navigation={navigation} />
       </View>
 
       {/* Filtres horizontaux */}

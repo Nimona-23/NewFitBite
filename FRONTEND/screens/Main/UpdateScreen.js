@@ -17,7 +17,7 @@
 //     const [doctorRemarks, setDoctorRemarks] = useState('');
 //     const [title, setTitle] = useState('');
 //     const [description, setDescription] = useState('');
-    
+
 //      const handleSubmit = () => {
 //     console.log({ title, description });
 //     alert('Information updated successfully!');
@@ -27,7 +27,7 @@
 
 
 //     return (
-        
+
 //         <LinearGradient
 //             colors={COLORS.gradients.background.colors}
 //             locations={COLORS.gradients.background.locations}
@@ -139,7 +139,7 @@
 //                 <Button title="Submit" onPress={handleSubmit} style={styles.submitButton} />
 //                 </View>
 //             </ScrollView>
-        
+
 
 //         </LinearGradient>
 //     );
@@ -148,7 +148,7 @@
 // const styles = StyleSheet.create({
 //     container: {
 //         flex: 1,
-        
+
 //     },
 //     title: {
 //         fontSize: 24,
@@ -159,7 +159,7 @@
 //     },
 //     header: {
 //         marginTop:15,
-        
+
 //     },
 //     filterContainer: {
 //         padding:20,
@@ -223,7 +223,7 @@ import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from './Header';
 import { createFormulaire, updateFormulaire } from '../../services/apiService'; // Import API service
-import {useUser} from '../../services/Usercontext';
+import { useUser } from '../../services/Usercontext';
 
 const UpdateScreen = ({ navigation, route }) => {
     // States for form data
@@ -288,7 +288,6 @@ const UpdateScreen = ({ navigation, route }) => {
         >
             <View style={styles.header}>
                 <Header
-                    date="2 May, Monday"
                     onMorePress={() => console.log('More button pressed')}
                     navigation={navigation} // Pass navigation prop
                 />

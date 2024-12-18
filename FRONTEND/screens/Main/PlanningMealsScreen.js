@@ -33,17 +33,16 @@ const PlanningMealsScreen = ({ navigation }) => {
       {/* Header */}
       <View style={styles.header}>
         <Header
-          date="2 May, Monday"
           onMorePress={() => console.log('More button pressed')}
           navigation={navigation}
         />
       </View>
 
       <View style={styles.bbb}>
-   <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
-        <Feather name="arrow-left" size={24} color={COLORS.primary.dark} />
-      </TouchableOpacity>
-</View>
+        <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+          <Feather name="arrow-left" size={24} color={COLORS.primary.dark} />
+        </TouchableOpacity>
+      </View>
       {/* Meal Cards */}
       <ScrollView style={styles.mealContainer}>
         {meals.map((meal, index) => (
@@ -55,10 +54,10 @@ const PlanningMealsScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         ))}
-        <Button 
-          title="Create shopping list" 
-          onPress={() => navigation.navigate('GroceriesList')} 
-          style={styles.button}  
+        <Button
+          title="Create shopping list"
+          onPress={() => navigation.navigate('GroceriesList')}
+          style={styles.button}
         />
       </ScrollView>
     </LinearGradient>
@@ -94,19 +93,19 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   backButton: {
-   
+
     width: 40,
     height: 40,
-    borderRadius: 25, 
+    borderRadius: 25,
     backgroundColor: COLORS.primary.light,
     alignItems: 'center',
     justifyContent: 'center',
-    
+
   },
-  bbb : {
-    paddingBottom:15,
-    paddingTop:5,
-    paddingLeft:10,
+  bbb: {
+    paddingBottom: 15,
+    paddingTop: 5,
+    paddingLeft: 10,
   },
 
   mealText: {
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   // Style pour le bouton circulaire de retour
- 
+
 });
 
 export default PlanningMealsScreen;
