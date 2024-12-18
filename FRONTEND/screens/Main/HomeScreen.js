@@ -7,7 +7,7 @@ import { COLORS, getGradientColors, getMealColor } from '../../styles/colors';
 import Header from './Header';
 
 const CircularProgress = ({ eatenCalories, totalCalories }) => {
-    const percentage = (eatenCalories / totalCalories) * 100;
+    const percentage = totalCalories > 0 ? (eatenCalories / totalCalories) * 100 : 0;
     const size = 200;
     const strokeWidth = 15;
     const center = size / 2;
@@ -112,7 +112,7 @@ const HomeScreen = ({ navigation }) => {
                 contentContainerStyle={styles.scrollContent}
             >
 
-                <CircularProgress percentage={75} />
+                <CircularProgress eatenCalories={eatenCalories} totalCalories={totalCalories} />
 
                 <Text style={styles.goalText}>{totalCalories}</Text>
                 <Text style={styles.goalLabel}>Kcal Goal</Text>
