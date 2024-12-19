@@ -56,6 +56,7 @@ const IngredientsScreen = ({ navigation, route }) => {
         name: item.name,
         calories: item.calories,
       },
+
     };
 
     try {
