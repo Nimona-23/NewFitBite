@@ -1,66 +1,68 @@
-
-// const express = require('express');
-// const dotenv = require('dotenv');
-// const connectDB = require('./config/db');
-// const utilisateurRoutes = require('./routes/utilisateursRoutes');
-// const recetteRoutes = require('./routes/recettesRoutes');
-// const listeCoursesRoutes = require('./routes/listeCoursesRoutes');
-
-// dotenv.config();
-// connectDB();
-
-// const app = express();
-// app.use(express.json()); // Middleware pour parser les corps de requête en JSON
-
-// app.use('/api', utilisateurRoutes);
-// app.use('/api', recetteRoutes);
-// app.use('/api', listeCoursesRoutes);
-
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//   console.log(`Serveur démarré sur le port ${PORT}`);
-// });
 const express = require('express');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const colors = require('colors');
-const connectDB = require('./config/db');
-
-// Importation des routes
-const utilisateurRoutes = require('./routes/utilisateursRoutes');
-const listeCoursesRoutes = require('./routes/listeCoursesRoutes');
+const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
+const authRoutes = require('./routes/authRoutes');
+const recettesRoutes = require('./routes/recettesRoutes');
 const favorisRoutes = require('./routes/favorisRoutes');
-const formulaireRoutes = require('./routes/formulaireDynamiqueRoutes');
-const recetteRoutes = require('./routes/recettesRoutes');  // Route de recettes
-const ingredientRoutes = require('./routes/ingredientsRoutes');
+const formulaireDynamiqueRoutes = require('./routes/formulaireDynamiqueRoutes');
+const ingredientsRoutes = require('./routes/ingredientsRoutes');
+const listeCoursesRoutes = require('./routes/listeCoursesRoutes');
 const supermarchesRoutes = require('./routes/supermarchesRoutes');
-// Charger les variables d'environnement
+const utilisateursRoutes = require('./routes/utilisateursRoutes');
+
 dotenv.config();
-
-// Connexion à MongoDB
-connectDB();
-
-// Initialiser l'application Express
 const app = express();
 
-// Middleware pour parser le JSON
+// Configurer CORS pour permettre les requêtes provenant de localhost:8081
+const corsOptions = {
+  origin: ['http://localhost:8081', 'exp://192.168.1.144:8081'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions)); // Appliquez la politique CORS
+
+// Middleware pour analyser les requêtes JSON
 app.use(express.json());
 
-// Définition des routes
-app.use('/api/utilisateurs', utilisateurRoutes);
-app.use('/api/listes-courses', listeCoursesRoutes);
+// Définir les options de Swagger
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API Medifind',
+      version: '1.0.0',
+      description: 'API pour gérer les utilisateurs, les recettes et les favoris',
+    },
+  },
+  apis: ['./routes/*.js'], // Rechercher les annotations Swagger dans les fichiers de routes
+};
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/recettes', recettesRoutes);
 app.use('/api/favoris', favorisRoutes);
-app.use('/api/formulaires', formulaireRoutes);
-app.use('/api/recettes', recetteRoutes);  // Lien vers les routes des recettes
-app.use('/api/ingredients', ingredientRoutes);
+app.use('/api/formulaireDynamique', formulaireDynamiqueRoutes);
+app.use('/api/ingredients', ingredientsRoutes);
+app.use('/api/listeCourse', listeCoursesRoutes);
 app.use('/api/supermarches', supermarchesRoutes);
+app.use('/api/utilisateurs', utilisateursRoutes);
 
-// Gestion des erreurs 404
-app.use((req, res, next) => {
-  res.status(404).json({ message: 'Ressource non trouvée' });
-});
+// Connexion à MongoDB
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connecté'))
+  .catch(err => console.log(err));
 
-// Démarrage du serveur
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Serveur lancé sur le port ${PORT}`.yellow.bold);
-});
+app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
+
+
+const mealRoutes = require("./routes/meals");
+
+app.use("/api", mealRoutes);

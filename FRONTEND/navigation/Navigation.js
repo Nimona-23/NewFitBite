@@ -10,12 +10,13 @@ import GroceriesListScreen from "../screens/Main/GroceriesListScreen";
 import RecipesScreen from "../screens/Main/RecipesScreen";
 import IngredientsScreen from "../screens/Main/IngredientsScreen";
 
-import addfood1 from "../screens/addfood/addfood1";
-import addfood2 from "../screens/addfood/addfood2";
-import addfood3 from "../screens/addfood/addfood3";
-import addfood4 from "../screens/addfood/addfood4";
-import addfood5 from "../screens/addfood/addfood5";
+import Addfood1 from "../screens/addfood/addfood1";
+import Addfood2 from "../screens/addfood/addfood2";
+import Addfood3 from "../screens/addfood/addfood3";
+import Addfood4 from "../screens/addfood/addfood4";
+import Addfood5 from "../screens/addfood/addfood5";
 import ParentComponent from "../screens/addfood/ParentComponent";
+import UpdateScreen from "../screens/Main/UpdateScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,11 @@ const Navigation = () => {
   return (
     <Stack.Navigator initialRouteName={isFirstTime ? "Onboarding" : "Auth"}>
       <Stack.Screen
+        name="FormulaireDynamique"
+        component={UpdateScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="Onboarding"
         component={OnboardingStack}
         options={{ headerShown: false }}
@@ -76,34 +82,34 @@ const Navigation = () => {
       />
 
       <Stack.Screen
-        name="RecipiesScreen"
+        name="RecipesScreen"
         component={RecipesScreen}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen
         name="addfood1"
-        component={addfood1}
+        component={Addfood1}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="addfood2"
-        component={addfood2}
+        component={Addfood2}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="addfood3"
-        component={addfood3}
+        component={Addfood3}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="addfood4"
-        component={addfood4}
+        component={Addfood4}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="addfood5"
-        component={addfood5}
+        component={Addfood5}
         options={{ headerShown: false }}
       />
       <Stack.Screen
@@ -113,7 +119,7 @@ const Navigation = () => {
       />
 
       <Stack.Screen
-        name="Ingredients"
+        name="IngredientsScreen"
         component={IngredientsScreen}
         options={{ headerShown: false }}
       />

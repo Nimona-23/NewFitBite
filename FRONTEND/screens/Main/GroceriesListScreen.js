@@ -60,7 +60,6 @@ const GroceriesListScreen = ({ navigation }) => {
       {/* Header */}
       <View style={styles.header}>
         <Header
-          date="2 May, Monday"
           onMorePress={() => console.log('More button pressed')}
           navigation={navigation} // Pass navigation prop
         />

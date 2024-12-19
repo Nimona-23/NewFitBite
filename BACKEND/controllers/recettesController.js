@@ -1,24 +1,4 @@
-// const Recette = require('../models/recettes');
 
-// exports.createRecette = async (req, res) => {
-//   try {
-//     const recette = new Recette(req.body);
-//     await recette.save();
-//     res.status(201).send(recette);
-//   } catch (error) {
-//     res.status(400).send(error);
-//   }
-// };
-
-// exports.getRecette = async (req, res) => {
-//   try {
-//     const recette = await Recette.findById(req.params.id);
-//     res.status(200).send(recette);
-//   } catch (error) {
-//     res.status(404).send({ message: 'Recette non trouvée' });
-//   }
-// };
-// controllers/recettesController.js
 
 const Recette = require('../models/recettes');
 
@@ -66,5 +46,42 @@ exports.supprimerRecette = async (req, res) => {
     res.status(200).send({ message: 'Recette supprimée avec succès' });
   } catch (error) {
     res.status(500).send({ message: 'Erreur lors de la suppression de la recette' });
+  }
+};
+
+// Mettre à jour une recette par ID
+exports.mettreAJourRecette = async (req, res) => {
+  try {
+    const recette = await Recette.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, // Retourne la recette mise à jour
+      runValidators: true, // Valide les données avant la mise à jour
+    });
+
+    if (!recette) {
+      return res.status(404).send({ message: 'Recette non trouvée' });
+    }
+
+    res.status(200).send(recette);
+  } catch (error) {
+    res.status(400).send({ message: 'Erreur lors de la mise à jour de la recette', error });
+  }
+};
+
+// Filtrer les recettes par catégorie et trimestre
+exports.getFilteredRecettes = async (req, res) => {
+  const { categorie, trimestre } = req.query;
+
+  if (!categorie || !trimestre) {
+    return res.status(400).json({ message: "Les paramètres 'categorie' et 'trimestre' sont requis." });
+  }
+
+  try {
+    const recettes = await Recette.find({
+      categorie: categorie,
+      trimestre: trimestre,
+    });
+    res.status(200).json(recettes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
