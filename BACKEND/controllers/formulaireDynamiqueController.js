@@ -27,7 +27,7 @@ exports.createFormulaire = async (req, res) => {
 exports.getTrimestreByUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    const formulaire = await FormulaireDynamique.findOne({ userId });
+    const formulaire = await FormulaireDynamique.findOne({ utilisateur: userId });
     if (!formulaire) {
       return res.status(404).send({ message: 'Formulaire not found' });
     }

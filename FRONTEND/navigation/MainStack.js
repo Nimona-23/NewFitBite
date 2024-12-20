@@ -29,7 +29,7 @@ const MainStackNavigator = () => {
                     tabBarIcon: ({ focused, color }) => (
                         <Image
                             source={focused ? require('../assets/images/home.png') : require('../assets/images/home1.png')}
-                            style={{ width: 25, height: 25, tintColor: color }} 
+                            style={{ width: 25, height: 25, tintColor: color }}
                         />
                     ),
                 }}
@@ -39,13 +39,13 @@ const MainStackNavigator = () => {
                 component={RecipesScreen}
                 options={{
                     tabBarIcon: ({ focused, color }) => (
-                    <Image
-                        source={focused ? require('../assets/images/cuisine.png') : require('../assets/images/cuisine1.png')}
-                        style={{ width: 30, height: 30, tintColor: color }} 
-                    />
+                        <Image
+                            source={focused ? require('../assets/images/cuisine.png') : require('../assets/images/cuisine1.png')}
+                            style={{ width: 30, height: 30, tintColor: color }}
+                        />
                     ),
                 }}
-                />
+            />
             <Tab.Screen
                 name="Update"
                 component={UpdateScreen}
@@ -53,7 +53,7 @@ const MainStackNavigator = () => {
                     tabBarIcon: ({ focused, color }) => (
                         <Image
                             source={focused ? require('../assets/images/editer.png') : require('../assets/images/editer1.png')}
-                            style={{ width: 27, height: 27, tintColor: color }} 
+                            style={{ width: 27, height: 27, tintColor: color }}
                         />
                     ),
                 }}
@@ -65,10 +65,10 @@ const MainStackNavigator = () => {
                     tabBarIcon: ({ focused, color }) => (
                         <Image
                             source={focused ? require('../assets/images/favorite.png') : require('../assets/images/favorite1.png')}
-                            style={{ width: 33, height: 35, tintColor: color }} 
+                            style={{ width: 33, height: 35, tintColor: color }}
                         />
-                        ),
-                    }}
+                    ),
+                }}
             />
         </Tab.Navigator>
     );

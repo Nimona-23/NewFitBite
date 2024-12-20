@@ -68,21 +68,3 @@ exports.mettreAJourRecette = async (req, res) => {
   }
 };
 
-// Filtrer les recettes par catégorie et trimestre
-exports.getFilteredRecettes = async (req, res) => {
-  const { categorie, trimestre } = req.query;
-
-  if (!categorie || !trimestre) {
-    return res.status(400).json({ message: "Les paramètres 'categorie' et 'trimestre' sont requis." });
-  }
-
-  try {
-    const recettes = await Recette.find({
-      categorie: categorie,
-      trimestre: trimestre,
-    });
-    res.status(200).json(recettes);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};

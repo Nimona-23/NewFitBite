@@ -8,7 +8,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { getIngredients, getRecipes, createMeal, getMealsByUser, updateMealItems } from '../../services/apiService';
 import { useUser } from '../../services/Usercontext';
 
-
 const IngredientsScreen = ({ navigation, route }) => {
   const { category } = route.params;
   const [searchText, setSearchText] = useState('');
@@ -16,6 +15,8 @@ const IngredientsScreen = ({ navigation, route }) => {
   const [foods, setFoods] = useState([]);
   const [totalCalories, setTotalCalories] = useState(0);
   const { userId } = useUser(); // Get the current user's ID
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,6 +47,8 @@ const IngredientsScreen = ({ navigation, route }) => {
 
     fetchData();
   }, []);
+
+
 
   const handleAddMeal = async () => {
     try {
@@ -99,7 +102,7 @@ const IngredientsScreen = ({ navigation, route }) => {
 
       console.log('Meal added/updated successfully');
 
-      navigation.navigate('Home');
+      navigation.navigate('Main');
     } catch (error) {
       console.error('Error adding/updating meal:', error);
     }

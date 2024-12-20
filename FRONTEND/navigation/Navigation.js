@@ -125,7 +125,7 @@ const Navigation = () => {
       />
 
       <Stack.Screen
-        name="IngredientsScreen"
+        name="Ingredients"
         component={IngredientsScreen}
         options={{ headerShown: false }}
       />

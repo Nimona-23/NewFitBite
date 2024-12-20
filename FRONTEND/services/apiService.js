@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://192.168.56.1:5000/api'; // Replace with your actual backend URL
+const API_URL = 'http://192.168.1.66:5000/api'; // Replace with your actual backend URL
 
 export const signUpUser = async (userData) => {
   const user = {
@@ -13,6 +13,7 @@ export const signUpUser = async (userData) => {
   try {
     console.log('Sign-up Data:', user);
     const response = await axios.post(`${API_URL}/auth/inscrire`, user);
+
     return response.data;
   } catch (error) {
     console.error('Sign-up Error:', error);
@@ -60,11 +61,6 @@ export const addRecipe = async (recipeData) => {
     console.error('Error adding recipe:', error);
     throw error;
   }
-};
-
-export const getTrimestreByUser = async (userId) => {
-  const response = await axios.get(`${API_URL}/formulaireDynamique/user/${userId}`);
-  return response.data.trimestre;
 };
 
 // Récupérer les ingrédients
@@ -129,7 +125,16 @@ export const getFormulaires = async () => {
     throw error.response?.data || error.message;
   }
 };
-
+export const updateFormulaire = async (id, formData) => {
+  try {
+    const response = await axios.put(`${API_URL}/formulaireDynamique/${id}`, formData);
+    console.log('Formulaire Updated:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Update Form Error:', error);
+    throw error.response?.data || error.message;
+  }
+};
 
 // Mettre à jour une recette avec des ingrédients
 export const updateRecipeWithIngredients = async (recipeId, { ingredients }) => {
@@ -399,20 +404,7 @@ export const addIngredientToShoppingList = async (userId, ingredient) => {
 };
 
 
-export const createMeal = async (mealData) => {
-  const response = await axios.post(`${API_URL}/meals`, mealData);
-  return response.data;
-};
 
-export const updateMealItems = async (mealId, items) => {
-  const response = await axios.patch(`${API_URL}/meals/${mealId}/items`, { items });
-  return response.data;
-};
-
-export const getMealsByUser = async (userId) => {
-  const response = await axios.get(`${API_URL}/meals/user/${userId}`);
-  return response.data;
-};
 
 
 
@@ -497,4 +489,23 @@ export const getAllSupermarches = async () => {
   }
 };
 
+export const getTrimestreByUser = async (userId) => {
+  const response = await axios.get(`${API_URL}/formulaireDynamique/user/${userId}`);
+  return response.data.trimestre;
+};
+
+export const createMeal = async (mealData) => {
+  const response = await axios.post(`${API_URL}/meals`, mealData);
+  return response.data;
+};
+
+export const updateMealItems = async (mealId, items) => {
+  const response = await axios.patch(`${API_URL}/meals/${mealId}/items`, { items });
+  return response.data;
+};
+
+export const getMealsByUser = async (userId) => {
+  const response = await axios.get(`${API_URL}/meals/user/${userId}`);
+  return response.data;
+};
 

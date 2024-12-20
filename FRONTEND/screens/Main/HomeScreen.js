@@ -6,7 +6,7 @@ import { LinearGradient as RNLinearGradient } from 'expo-linear-gradient';
 import { COLORS, getGradientColors, getMealColor } from '../../styles/colors';
 import Header from './Header';
 import { useUser } from '../../services/Usercontext';
-import { getMealsByUser } from '../../services/apiService';
+import { getMealsByUser, getTrimestreByUser } from '../../services/apiService';
 
 
 const CircularProgress = ({ eatenCalories, totalCalories }) => {
@@ -72,7 +72,7 @@ const MealItem = ({ title, calories, recommended, items, isExpanded, onToggle, n
                 <Text style={styles.recommendedText}>Recommended {recommended} Kcal</Text>
             </View>
             <TouchableOpacity
-                onPress={() => navigation.navigate('IngredientsScreen', {
+                onPress={() => navigation.navigate('Ingredients', {
                     category: title, //selon le bouton appuyé
                 })}
             >
@@ -95,25 +95,21 @@ const MealItem = ({ title, calories, recommended, items, isExpanded, onToggle, n
 const HomeScreen = ({ navigation }) => {
     const [expandedMeal, setExpandedMeal] = useState('Breakfast');
     const [meals, setMeals] = useState([]);
-    const [trimestre, setTrimestre] = useState(1); // Default to 1 if not fetched
-    const totalCalories = 2181;
     const { userId } = useUser(); // Get the current user's ID
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [mealsData, trimestreData] = await Promise.all([
+                const [mealsData] = await Promise.all([
                     getMealsByUser(userId),
-                    getTrimestreByUser(userId)
                 ]);
                 setMeals(mealsData);
-                setTrimestre(trimestreData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        fetchMeals();
+        fetchData();
     }, [userId]);
 
     const getMealData = (mealType) => {
@@ -123,31 +119,23 @@ const HomeScreen = ({ navigation }) => {
 
     const getRecommendedCalories = (mealType) => {
         const recommendations = {
-            1: {
-                Breakfast: 450,
-                Lunch: 600,
-                Dinner: 600,
-                Snacks: 350,
-            },
-            2: {
-                Breakfast: 550,
-                Lunch: 750,
-                Dinner: 700,
-                Snacks: 450,
-            },
-            3: {
-                Breakfast: 550,
-                Lunch: 800,
-                Dinner: 750,
-                Snacks: 550,
-            },
+            Breakfast: 450,
+            Lunch: 600,
+            Dinner: 600,
+            Snacks: 350,
         };
 
-        return recommendations[trimestre][mealType] || 0;
+        return recommendations[mealType] || 0;
     };
 
     const eatenCalories = meals.reduce((sum, meal) => sum + meal.totalCalories, 0);
-
+    const totalCalories = Object.values({
+        Breakfast: 450,
+        Lunch: 600,
+        Dinner: 600,
+        Snacks: 350,
+    }).reduce((sum, calories) => sum + calories, 0);
+    console.log(totalCalories);
 
     return (
         <SafeAreaView style={styles.container}>
