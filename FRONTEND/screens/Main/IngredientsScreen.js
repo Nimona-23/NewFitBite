@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../styles/colors';
+import { Svg, Circle, Line } from 'react-native-svg';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from './Header';
 import Button from '../../components/Button';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getIngredients, getRecipes, createMeal, getMealsByUser, updateMealItems } from '../../services/apiService';
 import { useUser } from '../../services/Usercontext';
+
 
 const IngredientsScreen = ({ navigation, route }) => {
   const { category } = route.params;
@@ -63,6 +65,7 @@ const IngredientsScreen = ({ navigation, route }) => {
             count: itemMap.get(item._id).count + 1
           });
         } else {
+
           itemMap.set(item._id, {
             itemId: item._id,
             name: item.nom, // Assuming 'nom' is the name field
@@ -142,7 +145,7 @@ const IngredientsScreen = ({ navigation, route }) => {
           <Feather
             name={isSelected ? 'check' : 'plus'}
             size={20}
-            color={COLORS.primary.light}
+            color={COLORS.primary.dark}
           />
         </TouchableOpacity>
       </View>
@@ -283,15 +286,24 @@ const styles = StyleSheet.create({
     width: '95%',  // Réduit la largeur des cartes alimentaires
     alignSelf: 'center',  // Centre les cartes
   },
+  foodInfo: {
+    flexDirection: 'row', // Set layout to horizontal
+    alignItems: 'center', // Align items vertically
+  },
   foodName: {
     fontSize: 16,
     color: '#1a1c24',
     fontWeight: 'bold',
+    marginRight: 5, // Add spacing between name and calories
+  },
+  foodType: {
+    marginRight: 20, // Add spacing between name and calories
   },
   foodCalories: {
     fontSize: 14,
     color: '#9da8c3',
   },
+
   addButton: {
     width: 30,
     height: 30,
