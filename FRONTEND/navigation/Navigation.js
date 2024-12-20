@@ -9,6 +9,7 @@ import GroceriesListScreen from "../screens/Main/GroceriesListScreen";
 // import ProfileScreen from '../screens/Main/ProfileScreen';
 import RecipesScreen from "../screens/Main/RecipesScreen";
 import IngredientsScreen from "../screens/Main/IngredientsScreen";
+import PlannigScreen from "../screens/Main/PlannigScreen";
 
 import Addfood1 from "../screens/addfood/addfood1";
 import Addfood2 from "../screens/addfood/addfood2";
@@ -121,6 +122,11 @@ const Navigation = () => {
       <Stack.Screen
         name="ParentComponent"
         component={ParentComponent}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PlannigScreen"
+        component={PlannigScreen}
         options={{ headerShown: false }}
       />
 
