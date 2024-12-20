@@ -29,7 +29,11 @@ router.delete('/:id', supprimerIngredient);
  *         nom:
  *           type: string
  *           description: Le nom de l'ingrédient
+<<<<<<< HEAD
  *         quantiteStock:
+=======
+ *         calories:
+>>>>>>> lobna
  *           type: number
  *           description: La quantité en stock
  *         unité:
@@ -38,7 +42,11 @@ router.delete('/:id', supprimerIngredient);
  *       example:
  *         id: "12345"
  *         nom: "Tomate"
+<<<<<<< HEAD
  *         quantiteStock: 10
+=======
+ *         calories: 10
+>>>>>>> lobna
  *         unité: "kg"
  */
 

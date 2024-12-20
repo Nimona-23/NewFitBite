@@ -1,3 +1,6 @@
+
+
+
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -11,14 +14,14 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
-  
+
 
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Slider from "@react-native-community/slider";
 import { Picker } from "@react-native-picker/picker";
 import { addRecipe } from '../../services/apiService'; // Importer la méthode d'API
-import Button from "../../components/Button"; 
+import Button from "../../components/Button";
 
 const Addfood2 = ({ navigation }) => {
   const [formData, setFormData] = useState({
@@ -45,8 +48,8 @@ const Addfood2 = ({ navigation }) => {
   const toggleTrimester = (trimester) => {
     setSelectedTrimesters((prev) =>
       prev.includes(trimester)
-        ? prev.filter((item) => item !== trimester) 
-        : [...prev, trimester] 
+        ? prev.filter((item) => item !== trimester)
+        : [...prev, trimester]
     );
   };
   const pickImageFromGallery = async () => {
@@ -106,7 +109,7 @@ const Addfood2 = ({ navigation }) => {
   };
 
   return (
-    
+
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -123,23 +126,23 @@ const Addfood2 = ({ navigation }) => {
             </View>
 
 
-      {/* Image Picker */}
-      <TouchableOpacity
-        style={styles.imageContainer}
-        onPress={pickImageFromGallery}
-      >
-        {formData.image ? (
-          <Image
-            source={{ uri: formData.image }}
-            style={styles.selectedImage}
-          />
-        ) : (
-          <View style={styles.imagePlaceholder}>
-            <Text style={styles.uploadText}>Add Cover Photo</Text>
-            <Text style={styles.uploadLimit}>(up to 12 Mb)</Text>
-          </View>
-        )}
-      </TouchableOpacity>
+            {/* Image Picker */}
+            <TouchableOpacity
+              style={styles.imageContainer}
+              onPress={pickImageFromGallery}
+            >
+              {formData.image ? (
+                <Image
+                  source={{ uri: formData.image }}
+                  style={styles.selectedImage}
+                />
+              ) : (
+                <View style={styles.imagePlaceholder}>
+                  <Text style={styles.uploadText}>Add Cover Photo</Text>
+                  <Text style={styles.uploadLimit}>(up to 12 Mb)</Text>
+                </View>
+              )}
+            </TouchableOpacity>
 
             {/* Food Name Input */}
             <View style={styles.inputContainer}>
@@ -161,22 +164,22 @@ const Addfood2 = ({ navigation }) => {
 
 
 
-      {/* Category Picker */}
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Category</Text>
-        <Picker
-          selectedValue={formData.category}
-          onValueChange={(itemValue) =>
-            setFormData((prev) => ({ ...prev, categorie: itemValue }))
-          }
-          style={styles.picker}
-        >
-          <Picker.Item label="Breakfast" value="Breakfast" />
-          <Picker.Item label="Lunch" value="Lunch" />
-          <Picker.Item label="Dinner" value="Dinner" />
-          <Picker.Item label="Snacks" value="Snacks" />
-        </Picker>
-      </View>
+            {/* Category Picker */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Category</Text>
+              <Picker
+                selectedValue={formData.category}
+                onValueChange={(itemValue) =>
+                  setFormData((prev) => ({ ...prev, categorie: itemValue }))
+                }
+                style={styles.picker}
+              >
+                <Picker.Item label="Breakfast" value="Breakfast" />
+                <Picker.Item label="Lunch" value="Lunch" />
+                <Picker.Item label="Dinner" value="Dinner" />
+                <Picker.Item label="Snacks" value="Snacks" />
+              </Picker>
+            </View>
 
             {/* Cooking Duration Input */}
             <View style={styles.inputContainer}>
@@ -219,51 +222,51 @@ const Addfood2 = ({ navigation }) => {
                 onBlur={() => setFocusedInput(null)}
               />
             </View>
-{/* Trimester Checkboxes */}
-<View style={styles.inputContainer}>
-  <Text style={styles.label}>Choose Applicable Trimesters</Text>
-  <View style={styles.checkboxGroup}>
-    {[1, 2, 3].map((trimester) => (
-      <TouchableOpacity
-        key={trimester}
-        style={[
-          styles.checkboxContainer,
-          selectedTrimesters.includes(trimester) && styles.checkboxSelected,
-        ]}
-        onPress={() => toggleTrimester(trimester)}
-      >
-        <Text
-          style={[
-            styles.checkboxLabel,
-            selectedTrimesters.includes(trimester) && styles.checkboxLabelSelected,
-          ]}
-        >
-          Trimester {trimester}
-        </Text>
-      </TouchableOpacity>
-    ))}
-  </View>
-</View>
+            {/* Trimester Checkboxes */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Choose Applicable Trimesters</Text>
+              <View style={styles.checkboxGroup}>
+                {[1, 2, 3].map((trimester) => (
+                  <TouchableOpacity
+                    key={trimester}
+                    style={[
+                      styles.checkboxContainer,
+                      selectedTrimesters.includes(trimester) && styles.checkboxSelected,
+                    ]}
+                    onPress={() => toggleTrimester(trimester)}
+                  >
+                    <Text
+                      style={[
+                        styles.checkboxLabel,
+                        selectedTrimesters.includes(trimester) && styles.checkboxLabelSelected,
+                      ]}
+                    >
+                      Trimester {trimester}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
 
-      {/* Next Button */}
-      <TouchableOpacity
-        style={styles.nextButton}
-        // Appel de la méthode handleSubmit
-      >
-       <Button
-              title="Next"
-              onPress={handleSubmit}
-/>
-      </TouchableOpacity>
-    </View>
-    </ScrollView>
+            {/* Next Button */}
+            <TouchableOpacity
+              style={styles.nextButton}
+            // Appel de la méthode handleSubmit
+            >
+              <Button
+                title="Next"
+                onPress={handleSubmit}
+              />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
- 
+
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -364,7 +367,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  
+
 });
 
 export default Addfood2;

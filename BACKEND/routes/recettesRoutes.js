@@ -74,24 +74,24 @@ const router = express.Router();
 //  *           description: Date de dernière mise à jour de la recette
 //  */
 
- /**
- * @swagger
- * /api/recettes:
- *   post:
- *     summary: Créer une nouvelle recette
- *     tags: [Recettes]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Recette'
- *     responses:
- *       201:
- *         description: Recette créée avec succès
- *       400:
- *         description: Erreur lors de la création de la recette
- */
+/**
+* @swagger
+* /api/recettes:
+*   post:
+*     summary: Créer une nouvelle recette
+*     tags: [Recettes]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             $ref: '#/components/schemas/Recette'
+*     responses:
+*       201:
+*         description: Recette créée avec succès
+*       400:
+*         description: Erreur lors de la création de la recette
+*/
 router.post('/', creerRecette);
 
 /**
@@ -220,4 +220,7 @@ router.delete('/:id', supprimerRecette);
  *         description: Erreur lors de la mise à jour de la recette
  */
 router.put('/:id', mettreAJourRecette);
+
+router.get("/recettes/filtre", getFilteredRecettes);
+
 module.exports = router;

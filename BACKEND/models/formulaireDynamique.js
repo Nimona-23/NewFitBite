@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+const trimesterCategories = [1, 2, 3];
+
+
 const formulaireDynamiqueSchema = new mongoose.Schema({
   trimestre: {
     type: Number,

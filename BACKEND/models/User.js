@@ -14,8 +14,8 @@ const utilisateurSchema = new mongoose.Schema({
             ingredientName: { type: String, required: false },
             quantity: { type: Number, required: false },
             unit: { type: String, required: false },
-            supermarcheNom :{ type: String, required: false },
-            supermarcheImage :{ type: String },
+            supermarcheNom: { type: String, required: false },
+            supermarcheImage: { type: String },
         }
     ]
 }, { timestamps: true });

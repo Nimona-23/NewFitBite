@@ -55,7 +55,7 @@ const Navigation = () => {
         component={UpdateScreen}
         options={{ headerShown: false }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
         options={{ headerShown: false }}
@@ -80,7 +80,7 @@ const Navigation = () => {
         component={PlanningMealsScreen}
         options={{ headerShown: false }}
       />
-       {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+      {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
       <Stack.Screen
         name="GroceriesList"
         component={GroceriesListScreen}
@@ -125,7 +125,7 @@ const Navigation = () => {
       />
 
       <Stack.Screen
-        name="Ingredients"
+        name="IngredientsScreen"
         component={IngredientsScreen}
         options={{ headerShown: false }}
       />

@@ -78,7 +78,7 @@ const RecipesScreen = ({ navigation }) => {
     >
       {/* Header */}
       <View style={styles.headerContainer}>
-        <Header date="2 May, Monday" navigation={navigation} />
+        <Header navigation={navigation} />
       </View>
 
       {/* Search Bar */}
@@ -120,7 +120,7 @@ const RecipesScreen = ({ navigation }) => {
                 <View style={styles.inactiveButton}>
                   <Text style={styles.filterText}>{filter}</Text>
                 </View>
-              )}
+              )}s
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -150,11 +150,11 @@ const RecipesScreen = ({ navigation }) => {
 
               <Text style={styles.recipeDuration}>{recipe.tempsPreparation} minutes</Text>
 
-            </View>
-          </TouchableOpacity>
+            </View >
+          </TouchableOpacity >
         ))}
-      </ScrollView>
-    </LinearGradient>
+      </ScrollView >
+    </LinearGradient >
   );
 };
 
@@ -231,3 +231,4 @@ const styles = StyleSheet.create({
 });
 
 export default RecipesScreen;
+

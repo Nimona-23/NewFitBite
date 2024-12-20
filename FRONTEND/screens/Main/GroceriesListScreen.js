@@ -178,7 +178,6 @@ const [loading, setLoading] = useState(true);
       {/* Header */}
       <View style={styles.header}>
         <Header
-          date="2 May, Monday"
           onMorePress={() => console.log('More button pressed')}
           navigation={navigation}
         />

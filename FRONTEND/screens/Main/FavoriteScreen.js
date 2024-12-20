@@ -16,24 +16,59 @@ const FavoriteRecipesScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // List of categories to filter by
-  const filters = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+  // Recettes classées par catégorie
+  const recipesByCategory = {
+    Breakfast: [
+      {
+        id: 1,
+        title: 'cake',
+        duration: '15 min.',
+        image: require('../../assets/images/cake.png'),
+      },
+      {
+        id: 2,
+        title: 'breakfast',
+        duration: '10 min.',
+        image: require('../../assets/images/breakfast.png'),
+      },
+    ],
+    Lunch: [
+      {
+        id: 3,
+        title: 'Grilled Chicken Salad',
+        duration: '20 min.',
+        image: require('../../assets/images/salad.png'),
+      },
+      {
+        id: 4,
+        title: 'pumpkin-soup',
+        duration: '25 min.',
+        image: require('../../assets/images/pumkin-soup.jpg'),
+      },
+    ],
+    Dinner: [
+      {
+        id: 5,
+        title: 'Steak and Vegetables',
+        duration: '30 min.',
+        image: require('../../assets/images/salad.png'),
+      },
+      {
+        id: 6,
+        title: 'Pumpkin Soup',
+        duration: '15 min.',
+        image: require('../../assets/images/pumkin-soup.jpg'),
+      },
+    ],
+    Snacks: [
+      {
+        id: 7,
+        title: 'cake',
+        duration: '5 min.',
+        image: require('../../assets/images/cake.png'),
+      },
 
-  // Fetch favorite recipes
-  const fetchFavoriteRecipes = async () => {
-    try {
-      if (!userId) return;
-
-      setLoading(true);
-      const recipes = await getFavoriteRecipes(userId); // Fetch the favorite recipes from the API
-      setFavoriteRecipes(recipes);
-      console.log(recipes); // Log fetched recipes
-    } catch (err) {
-      setError('Failed to load favorite recipes.'); // Handle error
-      console.error('Error fetching favorite recipes:', err);
-    } finally {
-      setLoading(false);
-    }
+    ],
   };
 
   useEffect(() => {
@@ -71,7 +106,6 @@ const FavoriteRecipesScreen = ({ navigation }) => {
       {/* Header */}
       <View style={styles.headerContainer}>
         <Header
-          date="2 May, Monday"
           onMorePress={() => console.log('More button pressed')}
           navigation={navigation}
         />

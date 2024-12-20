@@ -1,7 +1,10 @@
 {
   "dependencies": {
     "expo": "^52.0.17",
+<<<<<<< HEAD
     "express": "^4.21.2",
+=======
+>>>>>>> lobna
     "express-session": "^1.18.1"
   }
 }

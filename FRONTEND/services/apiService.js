@@ -2,7 +2,11 @@
 
 import axios from 'axios';
 
+<<<<<<< HEAD
 const API_URL = 'http://192.168.1.139:5000/api'; // Replace with your actual backend URL
+=======
+const API_URL = 'http://192.168.56.1:5000/api'; // Replace with your actual backend URL
+>>>>>>> lobna
 
 export const signUpUser = async (userData) => {
     const user = {
@@ -13,7 +17,11 @@ export const signUpUser = async (userData) => {
     try {
         console.log('Sign-up Data:', user);
         const response = await axios.post(`${API_URL}/auth/inscrire`, user);
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> lobna
         return response.data;
     } catch (error) {
         console.error('Sign-up Error:', error);
@@ -27,7 +35,13 @@ export const getRecipes = async () => {
         console.log('Recipes:', response.data); // Logs the recipes
         return response.data; // Return the recipe data
     } catch (error) {
+<<<<<<< HEAD
         console.error('Error fetching recipes:', error);}}
+=======
+        console.error('Error fetching recipes:', error);
+    }
+}
+>>>>>>> lobna
 
 export const loginUser = async (userData) => {
     const user = {
@@ -49,6 +63,7 @@ export const loginUser = async (userData) => {
 
 export const addRecipe = async (recipeData) => {
     try {
+<<<<<<< HEAD
       const response = await axios.post(`${API_URL}/recettes`, recipeData, {
         headers: {
           'Content-Type': 'application/json',
@@ -62,12 +77,28 @@ export const addRecipe = async (recipeData) => {
   };
 
   // Récupérer les ingrédients
+=======
+        const response = await axios.post(`${API_URL}/recettes`, recipeData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; // Retourne la réponse de l'API (par exemple, la recette ajoutée)
+    } catch (error) {
+        console.error('Error adding recipe:', error);
+        throw error;
+    }
+};
+
+// Récupérer les ingrédients
+>>>>>>> lobna
 export const getIngredients = async () => {
     try {
         const response = await axios.get(`${API_URL}/ingredients`);
         console.log('Ingredients:', response.data);
         return response.data;
     } catch (error) {
+<<<<<<< HEAD
         console.error('Error fetching ingredients:', error);}}
 
 
@@ -83,6 +114,13 @@ export const getIngredientsParId = async (IngredientId) => {
   }
 };
 
+=======
+        console.error('Error fetching ingredients:', error);
+    }
+}
+
+
+>>>>>>> lobna
 // Créer un formulaire dynamique
 export const createFormulaire = async (formData) => {
     try {
@@ -107,7 +145,13 @@ export const addIngredient = async (ingredientData) => {
         });
         return response.data; // Retourne l'ingrédient ajouté
     } catch (error) {
+<<<<<<< HEAD
         console.error('Error adding ingredient:', error);}}
+=======
+        console.error('Error adding ingredient:', error);
+    }
+}
+>>>>>>> lobna
 // Obtenir tous les formulaires dynamiques
 export const getFormulaires = async () => {
     try {
@@ -119,6 +163,24 @@ export const getFormulaires = async () => {
         throw error.response?.data || error.message;
     }
 };
+<<<<<<< HEAD
+=======
+
+// Mettre à jour une recette avec des ingrédients
+export const updateRecipeWithIngredients = async (recipeId, { ingredients }) => {
+    try {
+        const response = await axios.put(`${API_URL}/recettes/${recipeId}`, { ingredients }, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; // Retourne la recette mise à jour
+    } catch (error) {
+        console.error('Error updating recipe:', error);
+    }
+}
+// Mettre à jour un formulaire dynamique
+>>>>>>> lobna
 export const updateFormulaire = async (id, formData) => {
     try {
         const response = await axios.put(`${API_URL}/formulaireDynamique/${id}`, formData);
@@ -130,6 +192,7 @@ export const updateFormulaire = async (id, formData) => {
     }
 };
 
+<<<<<<< HEAD
 // Mettre à jour une recette avec des ingrédients
 export const updateRecipeWithIngredients = async (recipeId, {ingredients}) => {
     try {
@@ -145,6 +208,9 @@ export const updateRecipeWithIngredients = async (recipeId, {ingredients}) => {
 
 
 export const updateRecipeWithInstructions = async (recipeId, {instructions}) => {
+=======
+export const updateRecipeWithInstructions = async (recipeId, { instructions }) => {
+>>>>>>> lobna
     try {
         const response = await axios.put(`${API_URL}/recettes/${recipeId}`, { instructions }, {
             headers: {
@@ -168,6 +234,7 @@ export const deleteFormulaire = async (id) => {
         throw error.response?.data || error.message;
     }
 };
+<<<<<<< HEAD
 export const getRecetteParId = async (recipeId) => {
     try {
       const response = await axios.get(`${API_URL}/recettes/${recipeId}`);
@@ -482,3 +549,5 @@ export const getRecetteParId = async (recipeId) => {
   };
 
 
+=======
+>>>>>>> lobna

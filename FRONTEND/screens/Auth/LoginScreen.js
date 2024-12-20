@@ -119,8 +119,11 @@ import Button from '../../components/Button'; // Bouton personnalisé
 import Button2 from '../../components/Button2'; // Deuxième bouton personnalisé
 import axios from 'axios'; // Pour les requêtes API
 import { useUser } from '../../services/Usercontext';
+<<<<<<< HEAD
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+=======
+>>>>>>> lobna
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -157,7 +160,11 @@ const LoginScreen = ({ navigation }) => {
         }
 
         try {
+<<<<<<< HEAD
             const response = await axios.post('http://192.168.1.139:5000/api/auth/connexion', {
+=======
+            const response = await axios.post('http://192.168.56.1:5000/api/auth/connexion', {
+>>>>>>> lobna
                 email,
                 motDePasse: password,
             });
@@ -166,8 +173,11 @@ const LoginScreen = ({ navigation }) => {
             Alert.alert('Succès', 'Connexion réussie!');
             const userId = response.data.utilisateur.id;
             setUserId(userId);
+<<<<<<< HEAD
             console.log(userId)
             await AsyncStorage.setItem('utilisateurId', userId);
+=======
+>>>>>>> lobna
 
             // Naviguer vers l'écran principal
             navigation.navigate('Main', { user: response.data.utilisateur });

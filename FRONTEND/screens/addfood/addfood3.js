@@ -17,7 +17,7 @@ const Addfood3 = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
 
   const addIngredientInput = () => {
-    setIngredients([...ingredients,{ nom: "", quantite: "", unite: "" }]);
+    setIngredients([...ingredients, { nom: "", quantite: "", unite: "" }]);
   };
 
   const updateIngredientInput = (field, text, index) => {
@@ -29,11 +29,11 @@ const Addfood3 = ({ navigation, route }) => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-  
+
       // Ajouter chaque ingrédient au backend avec la quantité
       const ingredientIds = [];
       for (const ingredient of ingredients) {
-     
+
         if (ingredient.nom.trim() && ingredient.quantite.trim() && ingredient.unite.trim()) {
           const addedIngredient = await addIngredient({
             nom: ingredient.nom,
@@ -41,18 +41,18 @@ const Addfood3 = ({ navigation, route }) => {
           ingredientIds.push({
             ingredient: addedIngredient._id,
             quantite: ingredient.quantite,
-            unite : ingredient.unite,
+            unite: ingredient.unite,
           });
         }
       }
-  
+
       // Mettre à jour la recette avec les IDs des ingrédients
       const recipeId = route.params.recipeId; // ID de la recette passée via navigation
       console.log("Recipe ID:", recipeId);
 
-      
+
       await updateRecipeWithIngredients(recipeId, { ingredients: ingredientIds });
-  
+
       navigation.navigate("addfood4", { recipeId });
     } catch (error) {
       Alert.alert("Erreur", error.message || "Une erreur est survenue.");
@@ -60,7 +60,7 @@ const Addfood3 = ({ navigation, route }) => {
       setLoading(false);
     }
   };
-  
+
   console.log("ingredients:", ingredients);
 
 
@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
+
 
 export default Addfood3;
 

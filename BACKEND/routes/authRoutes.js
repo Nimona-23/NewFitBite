@@ -55,7 +55,6 @@ router.post('/connexion', async (req, res) => {
     if (motDePasse !== utilisateur.motDePasse) {
       return res.status(401).json({ message: 'Mot de passe incorrect.' });
     }
-    
     // Répondre avec les informations de l'utilisateur
     res.status(200).json({
       message: 'Connexion réussie.',
@@ -267,7 +266,7 @@ router.delete('/shopping-list/:userId', async (req, res) => {
     await utilisateur.save();
 
     // Répondre au client avec succès
-    res.status(200).json({ 
+    res.status(200).json({
       message: 'Liste des courses réinitialisée avec succès',
       shoppingList: utilisateur.shoppingList
     });
