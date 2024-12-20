@@ -101,76 +101,76 @@ const ProfileScreen = () => {
     return (
 
         <LinearGradient
-        colors={COLORS.gradients.background.colors}
-        locations={COLORS.gradients.background.locations}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={styles.container}
-    >
-        <View >
-            {/* Boutons Back et Logout */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
-                    <Text style={styles.headerButtonText}>Back</Text>
+            colors={COLORS.gradients.background.colors}
+            locations={COLORS.gradients.background.locations}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.container}
+        >
+            <View >
+                {/* Boutons Back et Logout */}
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => navigation.goBack()} style={styles.headerButton}>
+                        <Text style={styles.headerButtonText}>Back</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Auth')} style={styles.headerButton}>
+                        <Text style={styles.headerButtonText}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={styles.title}>My Profile</Text>
+
+                {/* Section pour choisir et afficher l'image */}
+                <TouchableOpacity style={styles.imageContainer} onPress={pickImageFromGallery}>
+                    {photo ? (
+                        <Image source={{ uri: photo }} style={styles.profileImage} />
+                    ) : (
+                        <View style={styles.imagePlaceholder}>
+                            <Text style={styles.uploadText}>Add Photo</Text>
+                            <Text style={styles.uploadLimit}>(12 MB max)</Text>
+                        </View>
+                    )}
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Auth')} style={styles.headerButton}>
-                    <Text style={styles.headerButtonText}>Logout</Text>
+
+                {/* Name Input */}
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={name}
+                        onChangeText={setName}
+                        placeholder="Enter your name"
+                    />
+                </View>
+
+                {/* Surname Input */}
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Surname</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={surname}
+                        onChangeText={setSurname}
+                        placeholder="Enter your surname"
+                    />
+                </View>
+
+                {/* Age Input */}
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Age</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={age}
+                        onChangeText={setAge}
+                        placeholder="Enter your age"
+                        keyboardType="numeric"
+                    />
+                </View>
+
+                {/* Save Button */}
+                <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                    <Text style={styles.saveButtonText}>Save</Text>
                 </TouchableOpacity>
             </View>
-
-            <Text style={styles.title}>My Profile</Text>
-
-            {/* Section pour choisir et afficher l'image */}
-            <TouchableOpacity style={styles.imageContainer} onPress={pickImageFromGallery}>
-                {photo ? (
-                    <Image source={{ uri: photo }} style={styles.profileImage} />
-                ) : (
-                    <View style={styles.imagePlaceholder}>
-                        <Text style={styles.uploadText}>Add Photo</Text>
-                        <Text style={styles.uploadLimit}>(12 MB max)</Text>
-                    </View>
-                )}
-            </TouchableOpacity>
-
-            {/* Name Input */}
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Name</Text>
-                <TextInput
-                    style={styles.input}
-                    value={name}
-                    onChangeText={setName}
-                    placeholder="Enter your name"
-                />
-            </View>
-
-            {/* Surname Input */}
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Surname</Text>
-                <TextInput
-                    style={styles.input}
-                    value={surname}
-                    onChangeText={setSurname}
-                    placeholder="Enter your surname"
-                />
-            </View>
-
-            {/* Age Input */}
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Age</Text>
-                <TextInput
-                    style={styles.input}
-                    value={age}
-                    onChangeText={setAge}
-                    placeholder="Enter your age"
-                    keyboardType="numeric"
-                />
-            </View>
-
-            {/* Save Button */}
-            <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-                <Text style={styles.saveButtonText}>Save</Text>
-            </TouchableOpacity>
-        </View>
         </LinearGradient>
     );
 };
@@ -262,4 +262,3 @@ const styles = StyleSheet.create({
 });
 
 export default ProfileScreen;
-

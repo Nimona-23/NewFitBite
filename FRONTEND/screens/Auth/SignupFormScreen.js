@@ -39,7 +39,7 @@ const SignupFormScreen = ({ navigation }) => {
       end={{ x: 0, y: 1 }}
       style={styles.container}
     >
-    
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
@@ -139,7 +139,7 @@ const SignupFormScreen = ({ navigation }) => {
           style={styles.button}
         />
       </ScrollView>
-      
+
     </LinearGradient>
   );
 };
@@ -147,7 +147,7 @@ const SignupFormScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
   },
   contentContainer: {
     padding: 20,
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     color: COLORS.primary.dark,
     marginBottom: 20,
     textAlign: 'center',
-},
+  },
   profilePicContainer: {
     alignItems: 'center',
     marginBottom: 20,
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     marginBottom: 8,
-},
+  },
   input: {
     width: '100%',
     backgroundColor: '#FFFFFF',
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     fontSize: 16,
-  
+
   },
   pickerContainer: {
     borderWidth: 1,

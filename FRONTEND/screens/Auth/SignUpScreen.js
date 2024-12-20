@@ -29,18 +29,18 @@
 //             Alert.alert('Error', 'Please enter a valid email address!');
 //             return;
 //         }
-    
+
 //         if (!isPasswordValid || !isPasswordContainsNumber) {
 //             Alert.alert('Error', 'Password does not meet requirements!');
 //             return;
 //         }
-    
+
 //         const userData = {
 //             email:email,
 //             motDePasse:motDePasse,
 //         };
 //         console.log(userData);
-    
+
 //         try {
 //             const result = await signUpUser(userData);
 //             if (result.success) {
@@ -55,7 +55,7 @@
 //             Alert.alert('Error', String(error) || 'An unexpected error occurred');
 //         }
 //     };
-    
+
 
 //     const togglePasswordVisibility = () => {
 //         setIsPasswordVisible(!isPasswordVisible); // Bascule la visibilité du mot de passe
@@ -274,11 +274,11 @@ const SignUpScreen = ({ navigation }) => {
             console.log(result);
             console.log(result.success);
 
-            
-           
-                Alert.alert('Success', 'Account created successfully!');
-                navigation.navigate('FormulaireDynamique');
-            
+
+
+            Alert.alert('Success', 'Account created successfully!');
+            navigation.navigate('FormulaireDynamique');
+
         } catch (error) {
             Alert.alert('Error', error || 'An unexpected error occurred.');
         }

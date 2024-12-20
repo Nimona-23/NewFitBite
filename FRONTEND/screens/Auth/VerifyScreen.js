@@ -39,7 +39,7 @@ const VerifyScreen = ({ navigation }) => {
 
   const handleVerify = async () => {
     const verificationCode = code.join('');
-    
+
     // Check if the code is complete
     if (verificationCode.length < 4) {
       Alert.alert('Error', 'Please enter the full verification code');
@@ -140,10 +140,10 @@ const VerifyScreen = ({ navigation }) => {
 
       <Text style={styles.timer}>Code expires in: {Math.floor(timer / 60)}:{timer % 60}</Text>
 
-      <Button 
-        title={isLoading ? 'Verifying...' : 'Confirm'} 
-        onPress={handleVerify} 
-        style={styles.button} 
+      <Button
+        title={isLoading ? 'Verifying...' : 'Confirm'}
+        onPress={handleVerify}
+        style={styles.button}
         disabled={isLoading} // Disable the button while loading
       />
 

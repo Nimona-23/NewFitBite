@@ -25,24 +25,24 @@ exports.getListesCourses = async (req, res) => {
 
 exports.updateListeCourse = async (req, res) => {
     try {
-      const listeId = req.params.id;
-      const miseAJour = req.body;
-  
-      const listeMiseAJour = await ListeCourses.findByIdAndUpdate(
-        listeId,
-        miseAJour,
-        { new: true, runValidators: true } // Retourne la version mise à jour
-      );
-  
-      if (!listeMiseAJour) {
-        return res.status(404).json({ message: 'Liste de courses non trouvée' });
-      }
-  
-      res.status(200).json(listeMiseAJour);
+        const listeId = req.params.id;
+        const miseAJour = req.body;
+
+        const listeMiseAJour = await ListeCourses.findByIdAndUpdate(
+            listeId,
+            miseAJour,
+            { new: true, runValidators: true } // Retourne la version mise à jour
+        );
+
+        if (!listeMiseAJour) {
+            return res.status(404).json({ message: 'Liste de courses non trouvée' });
+        }
+
+        res.status(200).json(listeMiseAJour);
     } catch (error) {
-      res.status(400).json({ error: 'Erreur lors de la mise à jour de la liste', details: error.message });
+        res.status(400).json({ error: 'Erreur lors de la mise à jour de la liste', details: error.message });
     }
-  };
+};
 
 exports.supprimerListeCourses = async (req, res) => {
     try {
