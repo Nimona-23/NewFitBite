@@ -221,6 +221,6 @@ router.delete('/:id', supprimerRecette);
  */
 router.put('/:id', mettreAJourRecette);
 
-router.get("/recettes/filtre", getFilteredRecettes);
+// router.get("/recettes/filtre", getFilteredRecettes);
 
 module.exports = router;

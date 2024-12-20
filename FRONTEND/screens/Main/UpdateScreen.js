@@ -497,7 +497,6 @@ import Button from '../../components/Button';
 import { COLORS } from '../../styles/colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from './Header';
-<<<<<<< HEAD
 import { getFormulaires, updateFormulaire, createFormulaire } from '../../services/apiService'; // Import des fonctions API
 import { useUser } from '../../services/Usercontext';
 
@@ -506,21 +505,12 @@ const UpdateScreen = ({ navigation, route }) => {
     const { formulaireId } = route.params || {};
 
     const [loading, setLoading] = useState(true);
-=======
-import { createFormulaire, updateFormulaire } from '../../services/apiService'; // Import API service
-import { useUser } from '../../services/Usercontext';
-
-const UpdateScreen = ({ navigation, route }) => {
-    // States for form data
-    const [profileImage, setProfileImage] = useState(null);
->>>>>>> lobna
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
     const [trimester, setTrimester] = useState('');
     const [activityLevel, setActivityLevel] = useState('');
     const [supplements, setSupplements] = useState('');
     const [doctorRemarks, setDoctorRemarks] = useState('');
-<<<<<<< HEAD
     const [specialDiet, setSpecialDiet] = useState(''); // Nouveau champ pour le régime spécial
 
     useEffect(() => {
@@ -549,17 +539,6 @@ const UpdateScreen = ({ navigation, route }) => {
 
         fetchInitialData();
     }, [formulaireId]);
-=======
-    const { userId } = useUser();
-
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-    });
-
-    // If we are editing an existing formulaire, populate the fields with existing data
-    const { formulaireId } = route.params || {}; // Assume we pass the formulaireId to this screen if editing
->>>>>>> lobna
 
     const handleSubmit = async () => {
         const newFormData = {
@@ -568,19 +547,13 @@ const UpdateScreen = ({ navigation, route }) => {
             taille: height,
             ActivitePhysique: activityLevel,
             recommandations: supplements,
-<<<<<<< HEAD
             utilisateur: userId,
             regimeSpecial: specialDiet, // Ajouter le régime spécial dans les données envoyées
             doctorRemarks: doctorRemarks,
-=======
-            utilisateur: userId, // Replace with actual user ID if applicable
-            // Add other data if necessary
->>>>>>> lobna
         };
 
         try {
             if (formulaireId) {
-<<<<<<< HEAD
                 // Mise à jour du formulaire existant
                 await updateFormulaire(formulaireId, newFormData);
             } else {
@@ -598,28 +571,6 @@ const UpdateScreen = ({ navigation, route }) => {
     if (loading) {
         return <ActivityIndicator size="large" color={COLORS.primary.dark} />;
     }
-=======
-                // Update existing formulaire if formulaireId is passed
-                await updateFormulaire(formulaireId, newFormData);
-            } else {
-                // Create new formulaire if no formulaireId is passed
-                await createFormulaire(newFormData);
-            }
-            navigation.navigate("Main");
-
-            alert('Information updated successfully!');
-            setHeight('');
-            setWeight('');
-            setTrimester('');
-            setActivityLevel('');
-            setSupplements('');
-            setDoctorRemarks('');
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            alert('Error updating information. Please try again.');
-        }
-    };
->>>>>>> lobna
 
     return (
         <LinearGradient
@@ -630,36 +581,16 @@ const UpdateScreen = ({ navigation, route }) => {
             style={styles.container}
         >
             <View style={styles.header}>
-<<<<<<< HEAD
-    <Header date="2 May, Monday" navigation={navigation} />
-=======
-                <Header
-                    onMorePress={() => console.log('More button pressed')}
-                    navigation={navigation} // Pass navigation prop
-                />
->>>>>>> lobna
+                <Header date="2 May, Monday" navigation={navigation} />
             </View >
 
-    <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-    >
-        <View style={styles.filterContainer}>
-            <Text style={styles.title}>Your information</Text>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.scrollContent}
+            >
+                <View style={styles.filterContainer}>
+                    <Text style={styles.title}>Your information</Text>
 
-<<<<<<< HEAD
-=======
-                    <TouchableOpacity style={styles.profilePicContainer}>
-                        <View style={styles.profilePicCircle}>
-                            <Image
-                                source={require('../../assets/images/profile-placeholder.png')}
-                                style={styles.profileIcon}
-                            />
-                        </View>
-                        <Text style={styles.addPhotoText}>Add Profile Picture</Text>
-                    </TouchableOpacity>
-
->>>>>>> lobna
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Height</Text>
                         <TextInput
@@ -690,11 +621,7 @@ const UpdateScreen = ({ navigation, route }) => {
                                 onValueChange={(itemValue) => setTrimester(itemValue)}
                                 style={styles.picker}
                             >
-<<<<<<< HEAD
-                                
-=======
-                                <Picker.Item label="Select trimester" value="" />
->>>>>>> lobna
+
                                 <Picker.Item label="First trimester" value="1" />
                                 <Picker.Item label="Second trimester" value="2" />
                                 <Picker.Item label="Third trimester" value="3" />
@@ -702,19 +629,15 @@ const UpdateScreen = ({ navigation, route }) => {
                         </View >
                     </View >
 
-    <View style={styles.inputContainer}>
-        <Text style={styles.label}>Regular physical activity level</Text>
-        <View style={styles.pickerContainer}>
-            <Picker
-                selectedValue={activityLevel}
-                onValueChange={(itemValue) => setActivityLevel(itemValue)}
-                style={styles.picker}
-            >
-<<<<<<< HEAD
-                                
-=======
-                                <Picker.Item label="Select activity level" value="" />
->>>>>>> lobna
+                    <View style={styles.inputContainer}>
+                        <Text style={styles.label}>Regular physical activity level</Text>
+                        <View style={styles.pickerContainer}>
+                            <Picker
+                                selectedValue={activityLevel}
+                                onValueChange={(itemValue) => setActivityLevel(itemValue)}
+                                style={styles.picker}
+                            >
+
                                 <Picker.Item label="Sedentary" value="sedentary" />
                                 <Picker.Item label="Light" value="light" />
                                 <Picker.Item label="Moderate" value="moderate" />
@@ -745,7 +668,6 @@ const UpdateScreen = ({ navigation, route }) => {
                         />
                     </View>
 
-<<<<<<< HEAD
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Special Diet</Text>
                         <View style={styles.pickerContainer}>
@@ -763,8 +685,6 @@ const UpdateScreen = ({ navigation, route }) => {
                         </View>
                     </View>
 
-=======
->>>>>>> lobna
                     <Button title="Submit" onPress={handleSubmit} style={styles.submitButton} />
                 </View >
             </ScrollView >
@@ -788,31 +708,6 @@ const styles = StyleSheet.create({
     },
     filterContainer: {
         padding: 20,
-<<<<<<< HEAD
-=======
-    },
-    profilePicContainer: {
-        alignItems: 'center',
-        marginBottom: 30,
-    },
-    profilePicCircle: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        backgroundColor: '#E0E0E0',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    profileIcon: {
-        width: 40,
-        height: 40,
-        tintColor: COLORS.primary.dark,
-    },
-    addPhotoText: {
-        color: COLORS.primary.dark,
-        fontSize: 16,
->>>>>>> lobna
     },
     inputContainer: {
         marginBottom: 20,

@@ -16,8 +16,8 @@ const CircularProgress = ({ eatenCalories, totalCalories }) => {
     const progressStrokeDashoffset = circumference - (percentage / 100) * circumference;
 
     return (
-        
-        
+
+
         <View style={styles.progressContainer}>
             <Svg width={size} height={size}>
                 <Defs>

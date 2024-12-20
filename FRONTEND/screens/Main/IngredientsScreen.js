@@ -5,7 +5,10 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from './Header';
 import Button from '../../components/Button';
 import { LinearGradient } from 'expo-linear-gradient';
-import { getIngredients, getRecipes } from '../../services/apiService';
+import { getIngredients, getRecipes, createMeal, getMealsByUser, updateMealItems } from '../../services/apiService';
+import { useUser } from '../../services/Usercontext';
+
+
 
 const IngredientsScreen = ({ navigation, route }) => {
   const { category } = route.params;
@@ -13,6 +16,7 @@ const IngredientsScreen = ({ navigation, route }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [foods, setFoods] = useState([]);
   const [totalCalories, setTotalCalories] = useState(0);
+  const { userId } = useUser(); // Get the current user's ID
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +48,62 @@ const IngredientsScreen = ({ navigation, route }) => {
     fetchData();
   }, []);
 
+  const handleAddMeal = async () => {
+    try {
+      // Create a map to track item counts
+      const itemMap = new Map();
+
+      // Populate the map with existing items and their counts
+      selectedItems.forEach(item => {
+        if (itemMap.has(item._id)) {
+          itemMap.set(item._id, {
+            ...itemMap.get(item._id),
+            count: itemMap.get(item._id).count + 1
+          });
+        } else {
+          itemMap.set(item._id, {
+            itemId: item._id,
+            name: item.nom, // Assuming 'nom' is the name field
+            count: 1,
+            calories: item.calories
+          });
+        }
+      });
+
+      // Convert the map back to an array
+      const items = Array.from(itemMap.values());
+
+      const mealData = {
+        userId,
+        mealType: category,
+        items,
+        totalCalories
+      };
+
+      // Log the contents of selectedItems
+      console.log('Selected items:', selectedItems);
+
+      // Log the data being sent to the backend
+      console.log('Data being sent to backend:', mealData);
+
+      // Check if a meal for this category already exists for the user
+      const existingMeals = await getMealsByUser(userId);
+      const existingMeal = existingMeals.find(meal => meal.mealType === category);
+
+      if (existingMeal) {
+        // Update the existing meal
+        await updateMealItems(existingMeal._id, items);
+      } else {
+        // Create a new meal
+        await createMeal(mealData);
+      }
+
+      console.log('Meal added/updated successfully');
+    } catch (error) {
+      console.error('Error adding/updating meal:', error);
+    }
+  };
+
   const toggleItem = (item) => {
     if (selectedItems.find(selected => selected._id === item._id)) {
       // Remove item
@@ -53,48 +113,6 @@ const IngredientsScreen = ({ navigation, route }) => {
       // Add item
       setSelectedItems([...selectedItems, item]);
       setTotalCalories(prev => prev + item.calories);
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (selectedItems.length === 0) {
-      alert('Please select at least one item');
-      return;
-    }
-
-    try {
-      const today = new Date().toISOString().split('T')[0];
-
-      const payload = {
-        mealType: category,
-        date: today,
-        items: selectedItems.map(item => ({
-          itemId: item._id,
-          name: item.nom,
-          calories: item.calories,
-        }))
-      };
-
-      const response = await fetch('http://localhost:8080/api/meals', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save meal');
-      }
-
-      const result = await response.json();
-      console.log('Meal saved:', result);
-
-      // Navigate back to home screen
-      navigation.goBack();
-    } catch (error) {
-      console.error('Error saving meal:', error);
-      alert('Failed to save meal. Please try again.');
     }
   };
 
@@ -175,7 +193,7 @@ const IngredientsScreen = ({ navigation, route }) => {
       <View style={styles.buttonContainer}>
         <Button
           title={`Add ${selectedItems.length} items to ${category}`}
-          onPress={handleSubmit}
+          onPress={handleAddMeal}
           style={styles.submitButton}
           disabled={selectedItems.length === 0}
         />

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const mealSchema = new mongoose.Schema({
     mealType: { type: String, enum: ["Breakfast", "Lunch", "Dinner", "Snack"], required: true },
-    date: { type: String, required: true }, // YYYY-MM-DD format
+    userId: { type: String, required: true },
     items: [
         {
             itemId: { type: mongoose.Schema.Types.ObjectId, required: true },
