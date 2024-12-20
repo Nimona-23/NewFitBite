@@ -139,17 +139,35 @@ export const updateFormulaire = async (id, formData) => {
 // Mettre à jour une recette avec des ingrédients
 export const updateRecipeWithIngredients = async (recipeId, { ingredients }) => {
   try {
-    const response = await axios.put(`${API_URL}/recettes/${recipeId}`, { ingredients }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data; // Retourne la recette mise à jour
+      // Calculer la somme des calories de tous les ingrédients
+      const totalCalories = ingredients.reduce((sum, ingredient) => {
+          return sum + (+ingredient.calorie || 0); // Conversion des calories en nombre
+      }, 0);
+      
+      console.log('Total des calories :', totalCalories);
+      
+      // Inclure la somme des calories dans la requête
+      const response = await axios.put(
+          ${API_URL}/recettes/${recipeId},
+          { 
+              ingredients, 
+              calories: totalCalories // Ajout du champ calories
+          },
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          }
+      );
+      
+      console.log('Réponse du serveur:', response);
+      console.log('Données mises à jour:', response.data);
+
+      return response.data; // Retourne la recette mise à jour
   } catch (error) {
-    console.error('Error updating recipe:', error);
+      console.error('Erreur lors de la mise à jour de la recette:', error);
   }
-}
-// Mettre à jour un formulaire dynamique
+};
 
 
 export const updateRecipeWithInstructions = async (recipeId, { instructions }) => {
