@@ -9,7 +9,6 @@ import { getIngredients, getRecipes, createMeal, getMealsByUser, updateMealItems
 import { useUser } from '../../services/Usercontext';
 
 
-
 const IngredientsScreen = ({ navigation, route }) => {
   const { category } = route.params;
   const [searchText, setSearchText] = useState('');
@@ -99,6 +98,8 @@ const IngredientsScreen = ({ navigation, route }) => {
       }
 
       console.log('Meal added/updated successfully');
+
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error adding/updating meal:', error);
     }
@@ -123,7 +124,9 @@ const IngredientsScreen = ({ navigation, route }) => {
       <View style={styles.foodCard} key={item._id}>
         <View style={styles.foodInfo}>
           <Text style={styles.foodName}>{item.nom}</Text>
-          <Text style={styles.foodType}>{item.type === 'recipe' ? 'Recipe' : 'Ingredient'}</Text>
+          <Text style={styles.foodType}>
+            {item.type === 'recipe' ? 'Recipe' : `1 ${item.unité}`}
+          </Text>
           <Text style={styles.foodCalories}>{item.calories} kcal</Text>
         </View>
         <TouchableOpacity

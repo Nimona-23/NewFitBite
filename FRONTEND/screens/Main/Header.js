@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform } from 'r
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { COLORS } from '../../styles/colors';
 
-const Header = ({ onMorePress, navigation }) => {
+const Header = ({ navigation }) => {
     const today = new Date();
     const formattedDate = today.toLocaleDateString('en-US', {
         day: 'numeric',

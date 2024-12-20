@@ -62,6 +62,11 @@ export const addRecipe = async (recipeData) => {
   }
 };
 
+export const getTrimestreByUser = async (userId) => {
+  const response = await axios.get(`${API_URL}/formulaireDynamique/user/${userId}`);
+  return response.data.trimestre;
+};
+
 // Récupérer les ingrédients
 export const getIngredients = async () => {
   try {

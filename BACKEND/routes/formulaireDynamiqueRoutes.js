@@ -30,6 +30,9 @@ const express = require('express');
 const router = express.Router();
 const formulaireDynamiqueController = require('../controllers/formulaireDynamiqueController');
 
+router.get('/formulaireDynamique/user/:userId', formulaireDynamiqueController.getTrimestreByUser);
+
+
 /**
  * @swagger
  * tags:

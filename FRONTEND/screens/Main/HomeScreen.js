@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { Svg, Circle, G, LinearGradient, Stop, Defs } from 'react-native-svg';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import { LinearGradient as RNLinearGradient } from 'expo-linear-gradient';
 import { COLORS, getGradientColors, getMealColor } from '../../styles/colors';
 import Header from './Header';
+import { useUser } from '../../services/Usercontext';
+import { getMealsByUser } from '../../services/apiService';
+
 
 const CircularProgress = ({ eatenCalories, totalCalories }) => {
     const percentage = totalCalories > 0 ? (eatenCalories / totalCalories) * 100 : 0;
@@ -91,21 +94,66 @@ const MealItem = ({ title, calories, recommended, items, isExpanded, onToggle, n
 
 const HomeScreen = ({ navigation }) => {
     const [expandedMeal, setExpandedMeal] = useState('Breakfast');
-    const [eatenCalories, setEatenCalories] = useState(1645);
+    const [meals, setMeals] = useState([]);
+    const [trimestre, setTrimestre] = useState(1); // Default to 1 if not fetched
     const totalCalories = 2181;
+    const { userId } = useUser(); // Get the current user's ID
 
-    const breakfastItems = [
-        { name: 'Coffe with milk', quantity: '100 g', calories: 56 },
-        { name: 'Sandwich', quantity: '100 g', calories: 250 },
-        { name: 'Walnuts', quantity: '20 g', calories: 100 },
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [mealsData, trimestreData] = await Promise.all([
+                    getMealsByUser(userId),
+                    getTrimestreByUser(userId)
+                ]);
+                setMeals(mealsData);
+                setTrimestre(trimestreData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchMeals();
+    }, [userId]);
+
+    const getMealData = (mealType) => {
+        const meal = meals.find(meal => meal.mealType === mealType);
+        return meal ? meal : { items: [], totalCalories: 0 };
+    };
+
+    const getRecommendedCalories = (mealType) => {
+        const recommendations = {
+            1: {
+                Breakfast: 450,
+                Lunch: 600,
+                Dinner: 600,
+                Snacks: 350,
+            },
+            2: {
+                Breakfast: 550,
+                Lunch: 750,
+                Dinner: 700,
+                Snacks: 450,
+            },
+            3: {
+                Breakfast: 550,
+                Lunch: 800,
+                Dinner: 750,
+                Snacks: 550,
+            },
+        };
+
+        return recommendations[trimestre][mealType] || 0;
+    };
+
+    const eatenCalories = meals.reduce((sum, meal) => sum + meal.totalCalories, 0);
+
 
     return (
         <SafeAreaView style={styles.container}>
 
             <View style={styles.header}>
                 <Header
-                    onMorePress={() => console.log('More button pressed')}
                     navigation={navigation} // Pass navigation prop
                 />
             </View>
@@ -127,35 +175,42 @@ const HomeScreen = ({ navigation }) => {
                         </View>
                     </View>
 
+
                     <MealItem
                         title="Breakfast"
-                        calories={306}
-                        recommended={447}
-                        items={breakfastItems}
+                        calories={getMealData('Breakfast').totalCalories}
+                        recommended={getRecommendedCalories('Breakfast')}
+                        items={getMealData('Breakfast').items}
                         isExpanded={expandedMeal === 'Breakfast'}
                         onToggle={() => setExpandedMeal(expandedMeal === 'Breakfast' ? null : 'Breakfast')}
-                        navigation={navigation} // Pass navigation prop here
+                        navigation={navigation}
                     />
                     <MealItem
                         title="Lunch"
-                        recommended={547}
+                        calories={getMealData('Lunch').totalCalories}
+                        recommended={getRecommendedCalories('Lunch')}
+                        items={getMealData('Lunch').items}
                         isExpanded={expandedMeal === 'Lunch'}
                         onToggle={() => setExpandedMeal(expandedMeal === 'Lunch' ? null : 'Lunch')}
-                        navigation={navigation} // Pass navigation prop here
+                        navigation={navigation}
                     />
                     <MealItem
                         title="Dinner"
-                        recommended={547}
+                        calories={getMealData('Dinner').totalCalories}
+                        recommended={getRecommendedCalories('Dinner')}
+                        items={getMealData('Dinner').items}
                         isExpanded={expandedMeal === 'Dinner'}
                         onToggle={() => setExpandedMeal(expandedMeal === 'Dinner' ? null : 'Dinner')}
-                        navigation={navigation} // Pass navigation prop here
+                        navigation={navigation}
                     />
                     <MealItem
                         title="Snack"
-                        recommended={547}
+                        calories={getMealData('Snack').totalCalories}
+                        recommended={getRecommendedCalories('Snack')}
+                        items={getMealData('Snack').items}
                         isExpanded={expandedMeal === 'Snack'}
                         onToggle={() => setExpandedMeal(expandedMeal === 'Snack' ? null : 'Snack')}
-                        navigation={navigation} // Pass navigation prop here
+                        navigation={navigation}
                     />
 
                 </View>
