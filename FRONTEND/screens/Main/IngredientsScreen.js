@@ -5,128 +5,129 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 import Header from './Header';
 import Button from '../../components/Button';
 import { LinearGradient } from 'expo-linear-gradient';
-import { getIngredients } from '../../services/apiService';
-import { getRecipes } from '../../services/apiService';
+import { getIngredients, getRecipes } from '../../services/apiService';
 
 const IngredientsScreen = ({ navigation, route }) => {
-  const { category } = route.params; // Catégorie transmise depuis HomeScreen
+  const { category } = route.params;
   const [searchText, setSearchText] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
-  const [foods, setFoods] = useState([]); // Liste dynamique
-  const [trimestre, setTrimestre] = useState(''); // Info utilisateur connecté
+  const [foods, setFoods] = useState([]);
   const [totalCalories, setTotalCalories] = useState(0);
 
   useEffect(() => {
-    // Récupérer trimestre de l'utilisateur connecté
-    const userTrimestre = 'first'; // Exemple statique, à remplacer par l'info utilisateur
-    setTrimestre(userTrimestre);
-
-    // Récupérer les ingrédients et recettes filtrées
     const fetchData = async () => {
       try {
-        // Appel pour les ingrédients
-        // const ingredientsResponse = await fetch('http://localhost:8080/api/getIngredients');
-        const ingredientsData = await getIngredients();
-        // const ingredientsData = await ingredientsResponse.json();
+        // Fetch both ingredients and recipes
+        const [ingredientsData, recipesData] = await Promise.all([
+          getIngredients(),
+          getRecipes()
+        ]);
 
-        // Appel pour les recettes avec filtre dynamique
-        const recettesData = await getRecipes();
+        // Combine and format the data
+        const combinedData = [
+          ...ingredientsData.map(item => ({
+            ...item,
+            type: 'ingredient'
+          })),
+          ...recipesData.map(item => ({
+            ...item,
+            type: 'recipe'
+          }))
+        ];
 
-        // Fusionner les ingrédients et les recettes
-        const combinedData = [...ingredientsData, ...recettesData];
         setFoods(combinedData);
       } catch (error) {
-        console.error('Erreur lors du chargement des données :', error);
+        console.error('Error fetching data:', error);
       }
     };
-    console.log('Updated selectedItems:', selectedItems);
 
     fetchData();
-  }, [category, selectedItems]); // Dépendance ajoutée pour recharger les données si la catégorie change
+  }, []);
 
-  const saveMeal = async (item, isAdding) => {
-    const mealType = { category }; // Replace with the actual meal type
-    const endpoint = `http://localhost:8080/api/meals`;
+  const toggleItem = (item) => {
+    if (selectedItems.find(selected => selected._id === item._id)) {
+      // Remove item
+      setSelectedItems(selectedItems.filter(selected => selected._id !== item._id));
+      setTotalCalories(prev => prev - item.calories);
+    } else {
+      // Add item
+      setSelectedItems([...selectedItems, item]);
+      setTotalCalories(prev => prev + item.calories);
+    }
+  };
 
-    const payload = {
-      mealType,
-      date: new Date().toISOString().split("T")[0], // Today's date
-      item: {
-        itemId: item._id,
-        name: item.name,
-        calories: item.calories,
-      },
-
-    };
+  const handleSubmit = async () => {
+    if (selectedItems.length === 0) {
+      alert('Please select at least one item');
+      return;
+    }
 
     try {
-      const response = await fetch(endpoint, {
-        method: isAdding ? "POST" : "DELETE",
-        headers: { "Content-Type": "application/json" },
+      const today = new Date().toISOString().split('T')[0];
+
+      const payload = {
+        mealType: category,
+        date: today,
+        items: selectedItems.map(item => ({
+          itemId: item._id,
+          name: item.nom,
+          calories: item.calories,
+        }))
+      };
+
+      const response = await fetch('http://localhost:8080/api/meals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(payload),
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to save meal');
+      }
+
       const result = await response.json();
-      console.log(result.message);
+      console.log('Meal saved:', result);
+
+      // Navigate back to home screen
+      navigation.goBack();
     } catch (error) {
-      console.error("Error saving meal:", error);
+      console.error('Error saving meal:', error);
+      alert('Failed to save meal. Please try again.');
     }
   };
 
+  const renderFoodItem = (item) => {
+    const isSelected = selectedItems.find(selected => selected._id === item._id);
 
-  const toggleItem = (item) => {
-    console.log("Toggling item with id:", item._id);
-
-    if (selectedItems.includes(item._id)) {
-      // If item is already selected, remove it
-      setSelectedItems(selectedItems.filter((id) => id !== item._id));
-      setTotalCalories(totalCalories - item.calories);
-      saveMeal(item, false); // Remove from the table
-    } else {
-      // If item is not selected, add it
-      setSelectedItems([...selectedItems, item._id]);
-      setTotalCalories(totalCalories + item.calories);
-      saveMeal(item, true); // Add to the table
-    }
+    return (
+      <View style={styles.foodCard} key={item._id}>
+        <View style={styles.foodInfo}>
+          <Text style={styles.foodName}>{item.nom}</Text>
+          <Text style={styles.foodType}>{item.type === 'recipe' ? 'Recipe' : 'Ingredient'}</Text>
+          <Text style={styles.foodCalories}>{item.calories} kcal</Text>
+        </View>
+        <TouchableOpacity
+          style={[
+            styles.addButton,
+            isSelected && styles.selectedButton
+          ]}
+          onPress={() => toggleItem(item)}
+        >
+          <Feather
+            name={isSelected ? 'check' : 'plus'}
+            size={20}
+            color={COLORS.primary.light}
+          />
+        </TouchableOpacity>
+      </View>
+    );
   };
 
-
-
-
-  const renderFoodItem = (item) => (
-    <View style={styles.foodCard} key={item._id}>
-      <Text style={styles.foodName}>{item.nom}</Text>
-      <Text style={styles.foodCalories}>{item.calories} kcal</Text>
-      <TouchableOpacity
-        style={[
-          styles.addButton,
-          selectedItems.includes(item._id) && { backgroundColor: COLORS.primary.dark },
-        ]}
-        onPress={() => toggleItem(item._id)}
-      >
-        <Feather
-          name={selectedItems.includes(item._id) ? 'check' : 'plus'}
-          size={20}
-          color={COLORS.primary.light}
-        />
-      </TouchableOpacity>
-    </View>
+  const filteredFoods = foods.filter(item =>
+    item.nom.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-
-  const handleSubmit = () => {
-    console.log({ title, description });
-    alert('Items added successfully!');
-    setTitle('');
-    setDescription('');
-  };
-
-  // Fonction pour revenir à l'écran précédent
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
 
   return (
     <LinearGradient
@@ -134,7 +135,6 @@ const IngredientsScreen = ({ navigation, route }) => {
       locations={COLORS.gradients.background.locations}
       style={styles.container}
     >
-      {/* Header */}
       <View style={styles.headerContainer}>
         <Header
           onMorePress={() => console.log('More button pressed')}
@@ -142,45 +142,43 @@ const IngredientsScreen = ({ navigation, route }) => {
         />
       </View>
 
-      {/* Back Button */}
       <View style={styles.bbb}>
-        <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Feather name="arrow-left" size={24} color={COLORS.primary.dark} />
         </TouchableOpacity>
       </View>
 
-
-
-      {/* Title */}
       <Text style={styles.title}>{category}</Text>
       <Text style={styles.totalCalories}>Total Calories: {totalCalories}</Text>
 
-      {/* Search Bar */}
       <View style={styles.searchBar}>
         <Ionicons name="search-outline" size={20} color="#aaa" />
         <TextInput
           style={styles.searchInput}
-          placeholder="Looking for something?"
+          placeholder="Search ingredients or recipes..."
           value={searchText}
           onChangeText={setSearchText}
         />
       </View>
 
-      <View style={styles.hhh}></View>
-
-      {/* Food List */}
       <ScrollView style={styles.foodList}>
-        {foods.length === 0 ? (
-          <Text style={{ textAlign: 'center', marginTop: 20 }}>No items found</Text>
+        {filteredFoods.length === 0 ? (
+          <Text style={styles.noItemsText}>No items found</Text>
         ) : (
-          foods.map((item) => renderFoodItem(item))
+          filteredFoods.map(renderFoodItem)
         )}
       </ScrollView>
 
-
-      {/* Add to Breakfast Button */}
       <View style={styles.buttonContainer}>
-        <Button title="Add items" onPress={handleSubmit} style={styles.submitButton} />
+        <Button
+          title={`Add ${selectedItems.length} items to ${category}`}
+          onPress={handleSubmit}
+          style={styles.submitButton}
+          disabled={selectedItems.length === 0}
+        />
       </View>
     </LinearGradient>
   );

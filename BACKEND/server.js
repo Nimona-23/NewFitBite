@@ -12,6 +12,7 @@ const ingredientsRoutes = require('./routes/ingredientsRoutes');
 const listeCoursesRoutes = require('./routes/listeCoursesRoutes');
 const supermarchesRoutes = require('./routes/supermarchesRoutes');
 const utilisateursRoutes = require('./routes/utilisateursRoutes');
+const mealRoutes = require("./routes/MealRoutes");
 
 dotenv.config();
 const app = express();
@@ -63,6 +64,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Serveur démarré sur le port ${PORT}`));
 
 
-const mealRoutes = require("./routes/meals");
 
 app.use("/api", mealRoutes);

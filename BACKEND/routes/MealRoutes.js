@@ -28,6 +28,41 @@ router.post("/meals", async (req, res) => {
     }
 });
 
+// Update or add an item in the meal
+router.put("/meals", async (req, res) => {
+    try {
+        const { mealType, date, item } = req.body; // Item includes { itemId, name, calories }
+
+        let meal = await Meal.findOne({ mealType, date });
+
+        if (!meal) {
+            // Create a new meal if it doesn't exist
+            meal = new Meal({ mealType, date, items: [], totalCalories: 0 });
+        }
+
+        // Check if the item already exists
+        const existingItemIndex = meal.items.findIndex(i => i.itemId.toString() === item.itemId);
+
+        if (existingItemIndex >= 0) {
+            // Increment the count of the existing item
+            meal.items[existingItemIndex].count += 1;
+            meal.totalCalories += item.calories;
+        } else {
+            // Add the new item with count = 1
+            meal.items.push({ ...item, count: 1 });
+            meal.totalCalories += item.calories;
+        }
+
+        await meal.save();
+
+        res.status(200).json({ message: "Item updated/added successfully", meal });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to update/add item to meal" });
+    }
+});
+
+
 
 // Remove a meal
 router.delete("/meals", async (req, res) => {
