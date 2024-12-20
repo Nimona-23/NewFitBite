@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import {
   View,
@@ -13,11 +11,11 @@ import {
 import { addIngredient, updateRecipeWithIngredients } from "../../services/apiService"; // Import des services
 
 const Addfood3 = ({ navigation, route }) => {
-  const [ingredients, setIngredients] = useState([{ nom: "", quantite: "", unite: "" },]);
+  const [ingredients, setIngredients] = useState([{ nom: "", quantite: "", unite: "" , calorie: ""},]);
   const [loading, setLoading] = useState(false);
 
   const addIngredientInput = () => {
-    setIngredients([...ingredients, { nom: "", quantite: "", unite: "" }]);
+    setIngredients([...ingredients,{ nom: "", quantite: "", unite: "" , calorie: ""}]);
   };
 
   const updateIngredientInput = (field, text, index) => {
@@ -29,30 +27,31 @@ const Addfood3 = ({ navigation, route }) => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-
+  
       // Ajouter chaque ingrédient au backend avec la quantité
       const ingredientIds = [];
       for (const ingredient of ingredients) {
-
-        if (ingredient.nom.trim() && ingredient.quantite.trim() && ingredient.unite.trim()) {
+     
+        if (ingredient.nom.trim() && ingredient.quantite.trim() && ingredient.unite.trim() && ingredient.calorie.trim()) {
           const addedIngredient = await addIngredient({
             nom: ingredient.nom,
           });
           ingredientIds.push({
             ingredient: addedIngredient._id,
             quantite: ingredient.quantite,
-            unite: ingredient.unite,
+            unite : ingredient.unite,
+            calorie: ingredient.calorie,
           });
         }
       }
-
+  
       // Mettre à jour la recette avec les IDs des ingrédients
       const recipeId = route.params.recipeId; // ID de la recette passée via navigation
       console.log("Recipe ID:", recipeId);
 
-
+      
       await updateRecipeWithIngredients(recipeId, { ingredients: ingredientIds });
-
+  
       navigation.navigate("addfood4", { recipeId });
     } catch (error) {
       Alert.alert("Erreur", error.message || "Une erreur est survenue.");
@@ -60,7 +59,7 @@ const Addfood3 = ({ navigation, route }) => {
       setLoading(false);
     }
   };
-
+  
   console.log("ingredients:", ingredients);
 
 
@@ -94,6 +93,13 @@ const Addfood3 = ({ navigation, route }) => {
               placeholder="Enter unit (e.g., kg, ml, ....)"
               value={ingredient.unite}
               onChangeText={(text) => updateIngredientInput("unite", text, index)}
+              placeholderTextColor="#999"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter nb of calories in kcal "
+              value={ingredient.calorie}
+              onChangeText={(text) => updateIngredientInput("calorie", text, index)}
               placeholderTextColor="#999"
             />
           </View>
@@ -212,7 +218,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
 export default Addfood3;
-
-
