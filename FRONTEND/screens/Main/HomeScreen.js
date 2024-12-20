@@ -122,7 +122,7 @@ const HomeScreen = ({ navigation }) => {
             Breakfast: 450,
             Lunch: 600,
             Dinner: 600,
-            Snacks: 350,
+            Snack: 350,
         };
 
         return recommendations[mealType] || 0;
@@ -133,7 +133,7 @@ const HomeScreen = ({ navigation }) => {
         Breakfast: 450,
         Lunch: 600,
         Dinner: 600,
-        Snacks: 350,
+        Snack: 350,
     }).reduce((sum, calories) => sum + calories, 0);
     console.log(totalCalories);
 
